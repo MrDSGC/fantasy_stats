@@ -57,11 +57,24 @@ function flattenObject(obj) {
     }
     return result;
 }
-app.use(cors());
 app.use(session({
     secret: 'grant',
     saveUninitialized: true,
     resave: false,
+    cookie: {
+        secure: false,
+        httpOnly: false,
+        domain: 'localhost',
+        sameSite: false
+    }
+}));
+app.use(cors({
+    origin: ['http://localhost:8080/'],
+    credentials: true,
+    exposedHeaders: ["set-cookie", "ajax_redirect"],
+    preflightContinue: true,
+    methods: ["GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS"],
+    optionsSuccessStatus: 200,
 }));
 app.get('/', (req, res) => {
     // Redirect to your frontend app's homepage
@@ -90,7 +103,9 @@ app.get('/callback', (req, res) => __awaiter(void 0, void 0, void 0, function* (
             refresh_token: tokenResponse.data.refresh_token,
             expires_in: tokenResponse.data.expires_in
         };
-        res.status(200).send("saved tokens");
+        req.session.save((err) => {
+            res.json(req.session.tokesn);
+        });
     }
     catch (error) {
         console.error('Error in /callback route:', error);
@@ -100,14 +115,16 @@ app.get('/callback', (req, res) => __awaiter(void 0, void 0, void 0, function* (
 const yahooApiRequest = (url, method = 'GET', params = {}, req) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
     try {
-        console.log(req.session);
-        let accessToken = req.session.tokens.access_token;
+        // Cant figure out how to persist req.session. 
+        // let accessToken = req.session.tokens.access_token;
+        let accessToken = req.query.authToken;
+        let expiresIn = 3600;
         // Check if access token has expired or is close to expiration
-        const expirationTime = req.session.tokens.expires_in * 1000; // Convert seconds to milliseconds
+        const expirationTime = expiresIn * 1000; // Convert seconds to milliseconds
         const currentTime = new Date().getTime();
         if (currentTime >= expirationTime) {
             // Access token has expired or is about to expire
-            const refreshToken = req.session.tokens.refresh_token;
+            let refreshToken = req.query.refreshToken;
             if (!refreshToken) {
                 throw new Error('Refresh token not found');
             }
@@ -115,10 +132,17 @@ const yahooApiRequest = (url, method = 'GET', params = {}, req) => __awaiter(voi
             const tokenResponse = yield axios.post(tokenUrl, `client_id=${encodeURIComponent(clientId)}&client_secret=${encodeURIComponent(clientSecret)}&redirect_uri=${encodeURIComponent(redirectUri)}&refresh_token=${encodeURIComponent(refreshToken)}&grant_type=refresh_token`);
             // Log the refreshed token response
             console.log('Refreshed Token Response:', tokenResponse.data);
-            // Update the session with the new access token
-            req.session.tokens.access_token = tokenResponse.data.access_token;
-            req.session.tokens.expires_in = tokenResponse.data.expires_in;
-            req.session.tokens.refresh_token = tokenResponse.data.refresh_token;
+            // Cant figure how to update the session with the new access token
+            // req.session.tokens.access_token = tokenResponse.data.access_token;
+            // req.session.tokens.expires_in = tokenResponse.data.expires_in;
+            // req.session.tokens.refresh_token = tokenResponse.data.refresh_token;
+            req.session.tokens = {
+                access_token: tokenResponse.data.access_token,
+                refresh_token: tokenResponse.data.refresh_token,
+                expires_in: tokenResponse.data.expires_in
+            };
+            // hacky way to log the tokens and manually enter them into the frontend lol...
+            console.log(req.session.tokens);
             // Use the new access token
             accessToken = tokenResponse.data.access_token;
         }
@@ -159,15 +183,15 @@ app.get('/fbb_teams', (req, res) => __awaiter(void 0, void 0, void 0, function* 
         };
         const leagueTeams = league.standings.teams[0].team.map((team) => {
             return {
-                teamId: team.team_id,
-                teamKey: team.team_key,
-                teamName: team.name,
-                teamLogo: team.team_logos[0].team_logo.url,
-                waiverPriority: team.waiver_priority,
-                numOfMoves: team.number_of_moves,
-                numOfTrades: team.number_of_trades,
-                draftPos: team.draft_position,
-                teamRank: team.team_standings[0].rank,
+                teamId: team.team_id[0],
+                teamKey: team.team_key[0],
+                teamName: team.name[0],
+                teamLogo: team.team_logos[0].team_logo[0].url[0],
+                waiverPriority: team.waiver_priority[0],
+                numOfMoves: team.number_of_moves[0],
+                numOfTrades: team.number_of_trades[0],
+                draftPos: team.draft_position[0],
+                teamRank: team.team_standings[0].rank[0],
                 teamWs: team.team_standings[0].outcome_totals[0].wins[0],
                 teamLs: team.team_standings[0].outcome_totals[0].losses[0],
                 teamTs: team.team_standings[0].outcome_totals[0].ties[0],
@@ -176,7 +200,7 @@ app.get('/fbb_teams', (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
         const parsedLeagueData = {
             leagueData: leagueData,
-            leageTeams: leagueTeams
+            leagueTeams: leagueTeams
         };
         // Send the league information back to the client
         res.json(parsedLeagueData);
