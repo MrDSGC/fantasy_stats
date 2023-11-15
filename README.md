@@ -1,4 +1,4 @@
-# Fantasy Stats
+# Fantasy Stats (WIP)
 
 Hitting Yahoo Api to return team data and visualize scoring for weekly updates
 
