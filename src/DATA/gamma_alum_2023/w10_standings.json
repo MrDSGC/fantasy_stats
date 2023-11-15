@@ -1,0 +1,705 @@
+{
+    "teams": {
+      "team": [
+        {
+          "team_key": "423.l.31248.t.12",
+          "team_id": 12,
+          "name": "LaPorta Potties",
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/12",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://s.yimg.com/cv/apiv2/default/nfl/nfl_10_d.png"
+            }
+          },
+          "waiver_priority": 8,
+          "number_of_moves": 12,
+          "prevYearWins": 1,
+          "prevYearLosses": 8,
+          "number_of_trades": 0,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 1
+          },
+          "league_scoring_type": "head",
+          "draft_position": 4,
+          "has_draft_grade": 1,
+          "draft_grade": "A+",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/12/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 12,
+              "nickname": "David",
+              "guid": "VOWAOWGY3PDDKN46TTEVCIINFU",
+              "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+              "felo_score": 609,
+              "felo_tier": "silver"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 1092.22
+          },
+          "team_standings": {
+            "rank": 1,
+            "playoff_seed": 1,
+            "outcome_totals": {
+              "wins": 5,
+              "losses": 4,
+              "ties": 0,
+              "percentage": 0.556
+            },
+            "streak": {
+              "type": "win",
+              "value": 2
+            },
+            "points_for": 1092.22,
+            "points_against": 1036.4
+          }
+        },
+        {
+          "team_key": "423.l.31248.t.11",
+          "team_id": 11,
+          "name": "Isaac BLM",
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/11",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://s.yimg.com/cv/apiv2/default/nfl/nfl_3_i.png"
+            }
+          },
+          "waiver_priority": 3,
+          "number_of_moves": 13,
+          "prevYearWins": 3,
+          "prevYearLosses": 6,
+          "number_of_trades": 0,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 1
+          },
+          "league_scoring_type": "head",
+          "draft_position": 5,
+          "has_draft_grade": 1,
+          "draft_grade": "D-",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/11/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 11,
+              "nickname": "Isaac",
+              "guid": "LKK6F7J7IIWDNWNI7N3EABBTGY",
+              "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+              "felo_score": 722,
+              "felo_tier": "gold"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 1082.36
+          },
+          "team_standings": {
+            "rank": 2,
+            "playoff_seed": 2,
+            "outcome_totals": {
+              "wins": 5,
+              "losses": 4,
+              "ties": 0,
+              "percentage": 0.556
+            },
+            "streak": {
+              "type": "loss",
+              "value": 3
+            },
+            "points_for": 1082.36,
+            "points_against": 1014.12
+          }
+        },
+        {
+          "team_key": "423.l.31248.t.9",
+          "team_id": 9,
+          "name": "San Diego Super Chargers",
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/9",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/0cf9a8d11929e5ecd91c47b976e564d361e6d9e36217de4d1d722041f5c7e870.png"
+            }
+          },
+          "waiver_priority": 10,
+          "number_of_moves": 28,
+          "prevYearWins": 2,
+          "prevYearLosses": 7,
+          "number_of_trades": 0,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 1
+          },
+          "league_scoring_type": "head",
+          "draft_position": 12,
+          "has_draft_grade": 1,
+          "draft_grade": "D+",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/9/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 9,
+              "nickname": "Justin Herbert",
+              "guid": "USZZWZA4ZCKN5FDQNDGTSHWENE",
+              "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+              "felo_score": 580,
+              "felo_tier": "bronze"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 1006.54
+          },
+          "team_standings": {
+            "rank": 3,
+            "playoff_seed": 3,
+            "outcome_totals": {
+              "wins": 5,
+              "losses": 4,
+              "ties": 0,
+              "percentage": 0.556
+            },
+            "streak": {
+              "type": "win",
+              "value": 4
+            },
+            "points_for": 1006.54,
+            "points_against": 1042.74
+          }
+        },
+        {
+          "team_key": "423.l.31248.t.2",
+          "team_id": 2,
+          "name": "Monty Bijan and the Holy Grail",
+          "is_owned_by_current_login": 1,
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/2",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/2d39aa9b8eb179cf04519bc56c19266201a871e30774b9c8b2218abcbd750806.png"
+            }
+          },
+          "waiver_priority": 2,
+          "number_of_moves": 22,
+          "prevYearWins": 5,
+          "prevYearLosses": 4,
+          "number_of_trades": 1,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 2
+          },
+          "league_scoring_type": "head",
+          "draft_position": 6,
+          "has_draft_grade": 1,
+          "draft_grade": "D-",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/2/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 2,
+              "nickname": "Daniel",
+              "guid": "6BU4OGM2LMWES24VIIWJV72UMQ",
+              "is_current_login": 1,
+              "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+              "felo_score": 743,
+              "felo_tier": "gold"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 1001.34
+          },
+          "team_standings": {
+            "rank": 4,
+            "playoff_seed": 4,
+            "outcome_totals": {
+              "wins": 5,
+              "losses": 4,
+              "ties": 0,
+              "percentage": 0.556
+            },
+            "streak": {
+              "type": "loss",
+              "value": 3
+            },
+            "points_for": 1001.34,
+            "points_against": 989
+          }
+        },
+        {
+          "team_key": "423.l.31248.t.4",
+          "team_id": 4,
+          "name": "R. White Power",
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/4",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/c399ae80feab73fa5525a4755a0b1a431de6507bd7039ad3b4058407f8581e98.jpg"
+            }
+          },
+          "waiver_priority": 4,
+          "number_of_moves": 38,
+          "prevYearWins": 6,
+          "prevYearLosses": 3,
+          "number_of_trades": 1,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 3
+          },
+          "league_scoring_type": "head",
+          "draft_position": 1,
+          "has_draft_grade": 1,
+          "draft_grade": "C",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/4/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 4,
+              "nickname": "Billy",
+              "guid": "MI7KRDWNVULCVGCTQOQAWQBGNI",
+              "image_url": "https://s.yimg.com/ag/images/6ef9b040-132e-4165-b3ec-5a9a1ba83289ho_64sq.jpg",
+              "felo_score": 645,
+              "felo_tier": "silver"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 970.98
+          },
+          "team_standings": {
+            "rank": 5,
+            "playoff_seed": 5,
+            "outcome_totals": {
+              "wins": 5,
+              "losses": 4,
+              "ties": 0,
+              "percentage": 0.556
+            },
+            "streak": {
+              "type": "loss",
+              "value": 2
+            },
+            "points_for": 970.98,
+            "points_against": 919.14
+          }
+        },
+        {
+          "team_key": "423.l.31248.t.8",
+          "team_id": 8,
+          "name": "Flowers for Lamargernon",
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/8",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://s.yimg.com/cv/apiv2/default/nfl/nfl_12.png"
+            }
+          },
+          "waiver_priority": 9,
+          "number_of_moves": 34,
+          "prevYearWins": 4,
+          "prevYearLosses": 5,
+          "number_of_trades": 0,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 1
+          },
+          "league_scoring_type": "head",
+          "draft_position": 10,
+          "has_draft_grade": 1,
+          "draft_grade": "C-",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/8/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 8,
+              "nickname": "Josh",
+              "guid": "ETEC6BNBUK73US3XRVZG26SRM4",
+              "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+              "felo_score": 568,
+              "felo_tier": "bronze"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 953.66
+          },
+          "team_standings": {
+            "rank": 6,
+            "playoff_seed": 6,
+            "outcome_totals": {
+              "wins": 5,
+              "losses": 4,
+              "ties": 0,
+              "percentage": 0.556
+            },
+            "streak": {
+              "type": "loss",
+              "value": 3
+            },
+            "points_for": 953.66,
+            "points_against": 893.84
+          }
+        },
+        {
+          "team_key": "423.l.31248.t.6",
+          "team_id": 6,
+          "name": "Law Abiding Citizens🚔",
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/6",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://s.yimg.com/cv/apiv2/default/nfl/nfl_11_t.png"
+            }
+          },
+          "waiver_priority": 12,
+          "number_of_moves": 38,
+          "prevYearWins": 6,
+          "prevYearLosses": 3,
+          "number_of_trades": 2,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 3
+          },
+          "league_scoring_type": "head",
+          "draft_position": 9,
+          "has_draft_grade": 1,
+          "draft_grade": "A-",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/6/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 6,
+              "nickname": "Timmy",
+              "guid": "55G6XTIHIPM7WONO6QR3GQPSSE",
+              "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+              "felo_score": 770,
+              "felo_tier": "gold"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 943.9
+          },
+          "team_standings": {
+            "rank": 7,
+            "playoff_seed": 7,
+            "outcome_totals": {
+              "wins": 5,
+              "losses": 4,
+              "ties": 0,
+              "percentage": 0.556
+            },
+            "streak": {
+              "type": "win",
+              "value": 1
+            },
+            "points_for": 943.9,
+            "points_against": 976.34
+          }
+        },
+        {
+          "team_key": "423.l.31248.t.10",
+          "team_id": 10,
+          "name": "Special Olympics",
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/10",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://s.yimg.com/cv/apiv2/default/nfl/nfl_6_j.png"
+            }
+          },
+          "waiver_priority": 5,
+          "number_of_moves": 15,
+          "prevYearWins": 5,
+          "prevYearLosses": 4,
+          "number_of_trades": 1,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 1
+          },
+          "league_scoring_type": "head",
+          "draft_position": 2,
+          "has_draft_grade": 1,
+          "draft_grade": "A",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/10/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 10,
+              "nickname": "Jaesung",
+              "guid": "I57VRB3A6PUX7DOV5VYYTY5E6A",
+              "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+              "felo_score": 847,
+              "felo_tier": "platinum"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 936.46
+          },
+          "team_standings": {
+            "rank": 8,
+            "playoff_seed": 8,
+            "outcome_totals": {
+              "wins": 5,
+              "losses": 4,
+              "ties": 0,
+              "percentage": 0.556
+            },
+            "streak": {
+              "type": "win",
+              "value": 3
+            },
+            "points_for": 936.46,
+            "points_against": 864.8
+          }
+        },
+        {
+          "team_key": "423.l.31248.t.5",
+          "team_id": 5,
+          "name": "it HURTS losing  👑",
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/5",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/52d85958fc7d44a08d59ed082b9cf1650c44e15029efecd6d2499abdcedc8939.png"
+            }
+          },
+          "waiver_priority": 1,
+          "number_of_moves": 27,
+          "prevYearWins": 7,
+          "prevYearLosses": 2,
+          "number_of_trades": 0,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 0
+          },
+          "league_scoring_type": "head",
+          "draft_position": 8,
+          "has_draft_grade": 1,
+          "draft_grade": "A+",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/5/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 5,
+              "nickname": "alan",
+              "guid": "3WTK6N2J3BEY2KJEYQTDA7RHGE",
+              "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+              "felo_score": 711,
+              "felo_tier": "gold"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 1017.8
+          },
+          "team_standings": {
+            "rank": 9,
+            "playoff_seed": 9,
+            "outcome_totals": {
+              "wins": 4,
+              "losses": 5,
+              "ties": 0,
+              "percentage": 0.444
+            },
+            "streak": {
+              "type": "win",
+              "value": 2
+            },
+            "points_for": 1017.8,
+            "points_against": 1031.46
+          }
+        },
+        {
+          "team_key": "423.l.31248.t.7",
+          "team_id": 7,
+          "name": "Shake it Goff",
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/7",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/4849eeedda616f386bc2006f8e54bfd2022d566486892f6d534b8557c6a7d7bf.jpg"
+            }
+          },
+          "waiver_priority": 7,
+          "number_of_moves": 30,
+          "prevYearWins": 4,
+          "prevYearLosses": 5,
+          "number_of_trades": 0,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 3
+          },
+          "league_scoring_type": "head",
+          "draft_position": 7,
+          "has_draft_grade": 1,
+          "draft_grade": "C+",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/7/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 7,
+              "nickname": "ay",
+              "guid": "GIZXJVBNRHVXATKMKGRVXO47ME",
+              "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+              "felo_score": 596,
+              "felo_tier": "bronze"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 935.84
+          },
+          "team_standings": {
+            "rank": 10,
+            "playoff_seed": 10,
+            "outcome_totals": {
+              "wins": 4,
+              "losses": 5,
+              "ties": 0,
+              "percentage": 0.444
+            },
+            "streak": {
+              "type": "loss",
+              "value": 1
+            },
+            "points_for": 935.84,
+            "points_against": 950.16
+          }
+        },
+        {
+          "team_key": "423.l.31248.t.1",
+          "team_id": 1,
+          "name": "Gibb Me Ur Kneecaps",
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/1",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/08531a02edd710e333f490c4562d13284dc8cb82cfdb21ea84517c55876f31d7.png"
+            }
+          },
+          "waiver_priority": 6,
+          "number_of_moves": 25,
+          "prevYearWins": 4,
+          "prevYearLosses": 5,
+          "number_of_trades": 1,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 1
+          },
+          "league_scoring_type": "head",
+          "draft_position": 3,
+          "has_draft_grade": 1,
+          "draft_grade": "D-",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/1/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 1,
+              "nickname": "nhi",
+              "guid": "WJ5OGBQAMMF7JK5G7SITLTBRBI",
+              "is_commissioner": 1,
+              "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+              "felo_score": 553,
+              "felo_tier": "bronze"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 843.04
+          },
+          "team_standings": {
+            "rank": 11,
+            "playoff_seed": 11,
+            "outcome_totals": {
+              "wins": 3,
+              "losses": 6,
+              "ties": 0,
+              "percentage": 0.333
+            },
+            "streak": {
+              "type": "win",
+              "value": 1
+            },
+            "points_for": 843.04,
+            "points_against": 890.78
+          }
+        },
+        {
+          "team_key": "423.l.31248.t.3",
+          "team_id": 3,
+          "name": "REDEEM TEAM",
+          "url": "https://football.fantasysports.yahoo.com/f1/31248/3",
+          "team_logos": {
+            "team_logo": {
+              "size": "large",
+              "url": "https://yahoofantasysports-res.cloudinary.com/image/upload/t_s192sq/fantasy-logos/c588d40dc36bdd7cda1506b5f285c39de9454c6d83de6deaf478f285a110360f.png"
+            }
+          },
+          "waiver_priority": 11,
+          "number_of_moves": 23,
+          "prevYearWins": 6,
+          "prevYearLosses": 3,
+          "number_of_trades": 0,
+          "roster_adds": {
+            "coverage_type": "week",
+            "coverage_value": 10,
+            "value": 2
+          },
+          "league_scoring_type": "head",
+          "draft_position": 11,
+          "has_draft_grade": 1,
+          "draft_grade": "A+",
+          "draft_recap_url": "https://football.fantasysports.yahoo.com/f1/31248/3/draftrecap",
+          "managers": {
+            "manager": {
+              "manager_id": 3,
+              "nickname": "Viliami",
+              "guid": "NVVJNL4RU7QLRGAXAUNZZ633Z4",
+              "image_url": "https://s.yimg.com/ag/images/default_user_profile_pic_64sq.jpg",
+              "felo_score": 742,
+              "felo_tier": "gold"
+            }
+          },
+          "team_points": {
+            "coverage_type": "season",
+            "season": 2023,
+            "total": 814.78
+          },
+          "team_standings": {
+            "rank": 12,
+            "playoff_seed": 12,
+            "outcome_totals": {
+              "wins": 3,
+              "losses": 6,
+              "ties": 0,
+              "percentage": 0.333
+            },
+            "streak": {
+              "type": "loss",
+              "value": 1
+            },
+            "points_for": 814.78,
+            "points_against": 990.14
+          }
+        }
+      ]
+    }
+  }

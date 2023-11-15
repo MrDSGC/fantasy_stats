@@ -1,0 +1,269 @@
+require('dotenv').config();
+const express = require('express');
+const session = require('express-session');
+const axios = require('axios');
+const https = require('https');
+const fs = require('fs');
+const cors = require('cors');
+const xml2js = require('xml2js');
+
+const app = express();
+const parser = new xml2js.Parser();
+
+const yahooAuthUrl = 'https://api.login.yahoo.com/oauth2/request_auth';
+const tokenUrl = 'https://api.login.yahoo.com/oauth2/get_token';
+const redirectUri = 'https://localhost:3000/callback';
+const clientId = process.env.CLIENT_ID ?? '';
+const clientSecret = process.env.CLIENT_SECRET ?? '';
+const fbbleagueId = '9037'; // 2023 GAMMA ALUMN
+const ffbleagueId = '';
+
+const FBB_STATS: any = {
+  '9004003': 'FGM/A',
+  '5': 'FG_PER',
+  '9007006': 'FTM/A',
+  '8': 'FT_PER',
+  '10': '3PM',
+  '12': 'PTS',
+  '15': 'REBS',
+  '16': 'ASS',
+  '17': 'STL',
+  '18': 'BLK',
+  '19': 'TO',
+}
+
+// Paths to SSL certificate files
+const privateKeyPath = 'certificates/localhost-key.pem';
+const certificatePath = 'certificates/localhost.pem';
+
+// Read SSL certificate files
+const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
+const certificate = fs.readFileSync(certificatePath, 'utf8');
+
+// SSL configuration
+const credentials = { key: privateKey, cert: certificate };
+
+function flattenObject(obj: any) {
+  const result: any = {};
+
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const value = obj[key][0];
+      result[key] = value;
+    }
+  }
+
+  return result;
+}
+
+app.use(cors());
+
+app.use(
+  session({
+    secret: 'grant',
+    saveUninitialized: true,
+    resave: false,
+  })
+);
+
+app.get('/', (req: any, res: any) => {
+  // Redirect to your frontend app's homepage
+  res.redirect('https://localhost/8080');
+});
+
+app.get('/start', (req: any, res: any) => {
+  // Redirect the user to the Yahoo authorization URL
+  const authorizationUrl = `${yahooAuthUrl}?client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&language=en-us`;
+  res.redirect(authorizationUrl);
+});
+
+app.get('/callback', async (req: any, res: any) => {
+  console.log("wemadeit")
+  try {
+    // Check if the authorization code is present in the query parameters
+    const authorizationCode = req.query.code;
+
+    if (!authorizationCode) {
+      return res.status(400).send('Authorization code not found');
+    }
+
+    // Use the authorization code to request an access token
+    const tokenResponse = await axios.post(
+      tokenUrl,
+      `client_id=${encodeURIComponent(clientId)}&client_secret=${encodeURIComponent(clientSecret)}&redirect_uri=${encodeURIComponent(redirectUri)}&code=${encodeURIComponent(authorizationCode)}&grant_type=authorization_code`
+    );
+
+
+    // Log the initial token response
+    console.log('Initial Token Response:', tokenResponse.data);
+    // Return the token data to the frontend app
+    req.session.tokens = {
+      access_token: tokenResponse.data.access_token, 
+      refresh_token: tokenResponse.data.refresh_token,
+      expires_in: tokenResponse.data.expires_in
+    };
+    res.status(200).send("saved tokens");
+
+  } catch (error) {
+    console.error('Error in /callback route:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+const yahooApiRequest = async (url: string, method = 'GET', params: any = {}, req: any) => {
+  try {
+    console.log(req.session)
+    let accessToken = req.session.tokens.access_token;
+    
+    // Check if access token has expired or is close to expiration
+    const expirationTime = req.session.tokens.expires_in * 1000; // Convert seconds to milliseconds
+    const currentTime = new Date().getTime();
+    
+    if (currentTime >= expirationTime) {
+      // Access token has expired or is about to expire
+      const refreshToken = req.session.tokens.refresh_token;
+      
+      if (!refreshToken) {
+        throw new Error('Refresh token not found');
+      }
+      
+      // Use the refresh token to request a new access token
+      const tokenResponse = await axios.post(
+        tokenUrl,
+        `client_id=${encodeURIComponent(clientId)}&client_secret=${encodeURIComponent(clientSecret)}&redirect_uri=${encodeURIComponent(redirectUri)}&refresh_token=${encodeURIComponent(refreshToken)}&grant_type=refresh_token`
+        );
+        
+        // Log the refreshed token response
+        console.log('Refreshed Token Response:', tokenResponse.data);
+        
+        // Update the session with the new access token
+        req.session.tokens.access_token = tokenResponse.data.access_token;
+        req.session.tokens.expires_in = tokenResponse.data.expires_in;
+        req.session.tokens.refresh_token = tokenResponse.data.refresh_token;
+        // Use the new access token
+        accessToken = tokenResponse.data.access_token;
+      }
+      
+      const yahooApiUrl = 'https://fantasysports.yahooapis.com/fantasy/v2';
+      console.log("making yahoo request")
+
+      // Make the Yahoo API request
+      return await axios({
+        method,
+        url: `${yahooApiUrl}${url}`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params,
+      }).then((res: any) => {
+        const result = parser.parseStringPromise(res.data);
+        return result;
+      });
+    } catch (error: any) {
+      console.error('Error making Yahoo API request:', error.response?.data || error.message);
+      throw error;
+    }
+  };
+  
+  // Endpoint to get Fantasy Basetball Leauge Information
+  app.get('/fbb_teams', async (req:any, res: any) => {
+    const getFbbLeague = `/league/nba.l.${fbbleagueId}/standings`;
+    try {
+      
+      console.log("hit endpoint")
+      // Make the Yahoo API request to get league information
+      const response = await yahooApiRequest(getFbbLeague, 'GET', {}, req);
+      // Map fields we care about to league object
+      const league = flattenObject(response.fantasy_content.league[0]);
+      const leagueData = {
+        leagueId: league.league_id,
+        leagueKey: league.league_key,
+        leagueName: league.name,
+        season: league.season
+      }
+
+      const leagueTeams = league.standings.teams[0].team.map((team: any) => {
+        return {
+          teamId: team.team_id,
+          teamKey: team.team_key,
+          teamName: team.name,
+          teamLogo: team.team_logos[0].team_logo.url,
+          waiverPriority: team.waiver_priority,
+          numOfMoves: team.number_of_moves,
+          numOfTrades: team.number_of_trades,
+          draftPos: team.draft_position,
+          teamRank: team.team_standings[0].rank,
+          teamWs: team.team_standings[0].outcome_totals[0].wins[0],
+          teamLs: team.team_standings[0].outcome_totals[0].losses[0],
+          teamTs: team.team_standings[0].outcome_totals[0].ties[0],
+          winPercent: team.team_standings[0].outcome_totals[0].percentage[0],
+        }
+      })
+
+      const parsedLeagueData = {
+        leagueData: leagueData,
+        leageTeams: leagueTeams
+      }
+
+      // Send the league information back to the client
+      res.json(parsedLeagueData);
+    } catch (error) {
+      console.error('Error in /ffb_teams route:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
+  // Endpoint to get Fantasy Basetball Leauge Information
+  app.get('/fbb_stats', async (req:any, res: any) => {
+
+
+    // 'YYYY-MM-DD` format 
+    const date = req.query.date;
+    const teamId = req.query.teamId;
+    const getFbbStats = `/team/nba.l.${fbbleagueId}.t.${teamId}/stats;type=date;date=${date}`;
+    try {
+      
+      console.log("hit endpoint")
+      // Make the Yahoo API request to get league information
+      const response = await yahooApiRequest(getFbbStats, 'GET', {}, req);
+      const teamStats = response.fantasy_content.team[0].team_stats[0].stats[0].stat;
+
+      const parsedStats = teamStats.map((team: any) => {
+        return {
+          statId: team.stat_id[0],
+          value: team.value[0],
+          statName: FBB_STATS[team.stat_id[0]]
+        }
+      })
+      console.log(parsedStats);
+      // Send the league information back to the client
+      res.json(parsedStats);
+    } catch (error) {
+      console.error('Error in /ffb_teams route:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+  // Endpoint to get Fantasy Football League information
+  app.get('/ffb_league', async (req: any, res: any) => {
+  const getFFB = '/league/nfl.l.';
+  try {
+    const leagueId = req.params.leagueId;
+    const leagueUrl = getFFB + `${leagueId}`
+    // Make the Yahoo API request to get league information
+    const leagueInfo = await yahooApiRequest(leagueUrl, 'GET', {}, req);
+
+    // Send the league information back to the client
+    res.json(leagueInfo);
+  } catch (error) {
+    console.error('Error in /league route:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+const server = https.createServer(credentials, app);
+
+server.listen(3000, () => {
+  console.log('Server is running on https://localhost:3000');
+});
