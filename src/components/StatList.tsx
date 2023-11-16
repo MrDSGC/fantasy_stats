@@ -59,7 +59,8 @@ export const StatList: React.FC<StatListProps> = ({ stats, statId }) => {
             borderRadius: '5px',
             border: '1px solid black',
             marginBottom: '4px',
-            fontWeight: 'bold' 
+            fontWeight: 'bold',
+            color: 'black' 
           }}
         >
           <img alt="crown" height="30px" width="30px" src={crownImage}/>
@@ -67,7 +68,7 @@ export const StatList: React.FC<StatListProps> = ({ stats, statId }) => {
           <Typography 
             variant='h6'
             sx={{
-              fontWeight: 'bold' 
+              fontWeight: 'bold', 
             }}
           >{item.teamName}</Typography>
           <Typography
@@ -76,6 +77,7 @@ export const StatList: React.FC<StatListProps> = ({ stats, statId }) => {
               border: '2px solid red',
               borderRadius: '5px',
               padding: '4px',
+              color: 'black' 
             }}
           >{getStatFromTeam(item, statId)}</Typography>
         </ListItem>

@@ -1,7 +1,7 @@
 # Fantasy Stats (WIP)
 
 Hitting Yahoo Api to return team data and visualize scoring for weekly updates
-
+![Alt text](image.png)
 ## Setup
 
 The stat app has 3 running processes:

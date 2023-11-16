@@ -143,6 +143,7 @@ const yahooApiRequest = async (url: string, method = 'GET', params: any = {}, re
     if (currentTime >= expirationTime) {
       // Access token has expired or is about to expire
       let refreshToken = req.query.refreshToken;
+      // let refreshToken = req.session.tokens.refresh_token;
       
       if (!refreshToken) {
         throw new Error('Refresh token not found');
@@ -245,7 +246,6 @@ const yahooApiRequest = async (url: string, method = 'GET', params: any = {}, re
   // Endpoint to get Fantasy Basetball Leauge Information
   app.get('/fbb_stats', async (req:any, res: any) => {
 
-
     // 'YYYY-MM-DD` format 
     const date = req.query.date;
     const teamId = req.query.teamId;
@@ -273,6 +273,32 @@ const yahooApiRequest = async (url: string, method = 'GET', params: any = {}, re
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+
+  app.get('/fbb_scoreboard', async (req: any, res: any) => {
+
+    const getFbbMatchups = `/league/nba.l.${fbbleagueId}/scoreboard`;
+    try {
+      
+      console.log("hit endpoint")
+      // Make the Yahoo API request to get league information
+      const response = await yahooApiRequest(getFbbMatchups, 'GET', {}, req);
+      const matchups = response.fantasy_content.league[0].scoreboard[0].matchups[0].matchup;
+      const parsedMatchups = matchups.map((matchup: any) => {
+        const player1 = matchup.teams[0].team[0].team_id[0];
+        const player2 = matchup.teams[0].team[1].team_id[0];
+        return {
+          player1: player1,
+          player2: player2
+        }
+      })
+      console.log(parsedMatchups);
+      // Send the league information back to the client
+      res.json(parsedMatchups);
+    } catch (error) {
+      console.error('Error in /ffb_scorecard route:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  })
   
   // Endpoint to get Fantasy Football League information
   app.get('/ffb_league', async (req: any, res: any) => {
@@ -290,6 +316,7 @@ const yahooApiRequest = async (url: string, method = 'GET', params: any = {}, re
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 const server = https.createServer(credentials, app);
 

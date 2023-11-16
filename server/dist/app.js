@@ -125,6 +125,7 @@ const yahooApiRequest = (url, method = 'GET', params = {}, req) => __awaiter(voi
         if (currentTime >= expirationTime) {
             // Access token has expired or is about to expire
             let refreshToken = req.query.refreshToken;
+            // let refreshToken = req.session.tokens.refresh_token;
             if (!refreshToken) {
                 throw new Error('Refresh token not found');
             }
@@ -235,6 +236,30 @@ app.get('/fbb_stats', (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         console.error('Error in /ffb_teams route:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}));
+app.get('/fbb_scoreboard', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const getFbbMatchups = `/league/nba.l.${fbbleagueId}/scoreboard`;
+    try {
+        console.log("hit endpoint");
+        // Make the Yahoo API request to get league information
+        const response = yield yahooApiRequest(getFbbMatchups, 'GET', {}, req);
+        const matchups = response.fantasy_content.league[0].scoreboard[0].matchups[0].matchup;
+        const parsedMatchups = matchups.map((matchup) => {
+            const player1 = matchup.teams[0].team[0].team_id[0];
+            const player2 = matchup.teams[0].team[1].team_id[0];
+            return {
+                player1: player1,
+                player2: player2
+            };
+        });
+        console.log(parsedMatchups);
+        // Send the league information back to the client
+        res.json(parsedMatchups);
+    }
+    catch (error) {
+        console.error('Error in /ffb_scorecard route:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }));

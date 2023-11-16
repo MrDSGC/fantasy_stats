@@ -5,7 +5,7 @@ import { Box, Button, MenuItem, Select } from '@mui/material';
 import { getToday, getYesterday, getWeekStart, getDatesInRange, extractMonthAndDay} from '../utils/dates';
 import { Overview } from '../components/Overview';
 import { Matchup} from '../components/Matchup';
-import { parseZeros } from '../utils/stats';
+import { getOpp, parseZeros } from '../utils/stats';
 
 type Props = {
   authToken: any;
@@ -216,6 +216,9 @@ const Fbb = ({
   const [season, setSeason] = useState('');
   const [leagueKey, setLeagueKey] = useState('');
   const [statsList, setStatsList] = useState([]);
+  const [matchups, setMatchups] = useState([]);
+  const [matchupData, setMatchupData] = useState([]);
+
 
   const Header: any = () => {
     const title = `${leagueName} ${season}`;
@@ -260,7 +263,7 @@ const Fbb = ({
     } 
   }
 
-  const getAllCurrentStats = async (date: any) => {
+  const getStatsByDate = async (date: any) => {
     // Use Promise.all to wait for all promises to resolve
     const updatedTeams = await Promise.all(
       HARDCODED_HASH_MAP.map(async (team: any) => {
@@ -511,7 +514,6 @@ const Fbb = ({
     });
 
     const today = getToday();
-    const yesterday = getYesterday();
     const weekStart = getWeekStart();
     const dateRange = getDatesInRange(weekStart, today);
     const calculatedWeek: string = `${extractMonthAndDay(weekStart)} - ${extractMonthAndDay(today)}`;
@@ -520,7 +522,7 @@ const Fbb = ({
   
     // Map the promises for each date
     const promises = dateRange.map(date => {
-      return getAllCurrentStats(date)
+      return getStatsByDate(date)
         .then((res) => {
           res.forEach((team: any) => {
             resultTeams[team.teamId - 1].ftA += team.ftA;
@@ -549,6 +551,146 @@ const Fbb = ({
 
   }
 
+  const getMatchups = () => {
+    try {
+
+      axios.get(
+        `${baseUrl}fbb_scoreboard?${authArgs}`
+      ).then((response: any) => {
+
+        setMatchups(response.data);
+      })
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  const getH2HData = () => {
+
+    let resultH2H: any = [
+      {
+        teamId: 1,
+        oppId: 0,
+        dailyStats: [],
+      },
+      {
+        teamId: 2,
+        oppId: 0,
+        dailyStats: [],
+      },
+      {
+        teamId: 3,
+        oppId: 0,
+        dailyStats: [],
+      },
+      {
+        teamId: 4,
+        oppId: 0,
+        dailyStats: [],
+      },
+      {
+        teamId: 5,
+        oppId: 0,
+        dailyStats: [],
+      },
+      {
+        teamId: 6,
+        oppId: 0,
+        dailyStats: [],
+      },
+      {
+        teamId: 7,
+        oppId: 0,
+        dailyStats: [],
+      },
+      {
+        teamId: 8,
+        oppId: 0,
+        dailyStats: [],
+      },
+      {
+        teamId: 9,
+        oppId: 0,
+        dailyStats: [],
+      },
+      {
+        teamId:10,
+        oppId: 0,
+        dailyStats: [],
+      },
+      {
+        teamId:11,
+        oppId: 0,
+        dailyStats: [],
+      },
+      {
+        teamId:12,
+        oppId: 0,
+        dailyStats: [],
+      },
+    ];
+
+    resultH2H = resultH2H.map((stats: any) => {
+      const matchingTeam: any = teams.find((team: any) => {
+        return parseInt(team.teamId) === parseInt(stats.teamId);
+      });
+  
+      if (matchingTeam) {
+        // If a matching team is found, add the teamName property to the stats object
+        return {
+          ...stats,
+          teamName: matchingTeam.teamName,
+          teamLogo: matchingTeam.teamLogo,
+          oppId: getOpp(matchups, matchingTeam.teamId)
+        };
+      }
+
+      // If no matching team is found, return the original stats object
+      return stats;
+    });
+
+    const today = getToday();
+    const weekStart = getWeekStart();
+    const dateRange = getDatesInRange(weekStart, today);
+    const calculatedWeek: string = `${extractMonthAndDay(weekStart)} - ${extractMonthAndDay(today)}`;
+    
+    setCurrentWeek(calculatedWeek);
+
+    const promises = dateRange.map(date => {
+      return getStatsByDate(date)
+        .then((res) => {
+          res.forEach((team: any) => {
+            const currDateStat = {
+              date: date,
+              ftA: team.ftA,
+              ftM: team.ftM,
+              fgA: team.fgA,
+              fgM: team.fgM,
+              ass: team.ass,
+              blk: team.blk,
+              pt: team.pt,
+              reb: team.reb,
+              stl: team.stl,
+              to: team.to,
+              threePM: team.threePM,
+            };
+            
+            resultH2H[team.teamId - 1].dailyStats.push(currDateStat);
+          });
+        });
+    });
+  
+    // Wait for all promises to resolve
+    Promise.all(promises)
+      .then(() => {
+        setMatchupData(resultH2H);
+      })
+      .catch((error) => {
+        console.error('Error updating stats list:', error);
+      });
+
+  }
+
   return (
     <div>
       <Header/>
@@ -564,6 +706,12 @@ const Fbb = ({
         <Button onClick={() => {getCurrentStatTotal()}}>
           Fetch Team Stats
         </Button>
+        <Button onClick={() => {getMatchups()}}>
+          Fetch Team Matchups
+        </Button>
+        <Button onClick={() => {getH2HData()}}>
+          Fetch Team Matchups Data
+        </Button>
         <Button onClick={() => {console.log(statsList)}}>
           Check Data
         </Button>
@@ -578,7 +726,7 @@ const Fbb = ({
         />
       )}
       {selectedOption === 'h2h' && (
-        <Matchup />
+        <Matchup matchupData={matchupData} matchups={matchups} />
       )}
     </div>
   );

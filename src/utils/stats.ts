@@ -28,3 +28,14 @@ export const getStatFromTeam = (team: any, statId: string) => {
 export const parseZeros = (value: any) => {
   return value === '-' ? 0 : value; 
 }
+
+export const getOpp = (matchups: any, playerId: any) => {
+  for (const matchup of matchups) {
+    if (matchup.player1.includes(playerId)) {
+      return matchup.player2;
+    } else if (matchup.player2.includes(playerId)) {
+      return matchup.player1;
+    }
+  }
+  return null; // Return null if the player ID is not found in the array
+}
