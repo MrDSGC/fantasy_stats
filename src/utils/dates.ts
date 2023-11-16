@@ -19,6 +19,16 @@ export function getWeekStart() {
   return `${year}-${month}-${day}`;
 }
 
+export function getToday() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(today.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+
 export function getYesterday() {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1 );
@@ -40,4 +50,18 @@ export function getDatesInRange(startDate: any, endDate: any) {
     start.setDate(start.getDate() + 1);
   }
   return dates;
+}
+
+export function extractMonthAndDay(dateString: string) {
+  console.log(dateString)
+  const dateParts = dateString.split('-');
+  
+  if (dateParts.length === 3) {
+    const month = dateParts[1];
+    const day = dateParts[2];
+    return `${month}/${day}`;
+  } else {
+    // Handle invalid input
+    return 'Invalid Date Format';
+  }
 }

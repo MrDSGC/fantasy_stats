@@ -259,6 +259,7 @@ const yahooApiRequest = async (url: string, method = 'GET', params: any = {}, re
 
       const parsedStats = teamStats.map((team: any) => {
         return {
+          teamId: teamId,
           statId: team.stat_id[0],
           value: team.value[0],
           statName: FBB_STATS[team.stat_id[0]]

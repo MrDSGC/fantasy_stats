@@ -1,8 +1,11 @@
 // Fantays Basketball Stats page
 import { useState } from 'react';
 import axios from 'axios';
-import { Box, Button } from '@mui/material';
-import {getYesterday, getWeekStart, getDatesInRange} from '../utils/dates';
+import { Box, Button, MenuItem, Select } from '@mui/material';
+import { getToday, getYesterday, getWeekStart, getDatesInRange, extractMonthAndDay} from '../utils/dates';
+import { Overview } from '../components/Overview';
+import { Matchup} from '../components/Matchup';
+import { parseZeros } from '../utils/stats';
 
 type Props = {
   authToken: any;
@@ -17,11 +20,21 @@ const Fbb = ({
   
   const baseUrl = 'https://localhost:3000/';
   const authArgs = `authToken=${authToken}&refreshToken=${refreshToken}`;
+
+  const [selectedOption, setSelectedOption] = useState('overview'); // 'teams' or 'stats'
+  const [currentWeek, setCurrentWeek] = useState('');
+
+  const handleOptionChange = (event: any) => {
+    setSelectedOption(event.target.value);
+  };
   
   let HARDCODED_HASH_MAP = [
       {
         teamId: 1,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -33,7 +46,10 @@ const Fbb = ({
       },
       {
         teamId: 2,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -45,7 +61,10 @@ const Fbb = ({
       },
       {
         teamId: 3,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -57,7 +76,10 @@ const Fbb = ({
       },
       {
         teamId: 4,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -69,7 +91,10 @@ const Fbb = ({
       },
       {
         teamId: 5,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -81,7 +106,10 @@ const Fbb = ({
       },
       {
         teamId: 6,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -93,7 +121,10 @@ const Fbb = ({
       },
       {
         teamId: 7,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -105,7 +136,10 @@ const Fbb = ({
       },
       {
         teamId: 8,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -117,7 +151,10 @@ const Fbb = ({
       },
       {
         teamId: 9,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -129,7 +166,10 @@ const Fbb = ({
       },
       {
         teamId:10,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -141,7 +181,10 @@ const Fbb = ({
       },
       {
         teamId:11,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -153,7 +196,10 @@ const Fbb = ({
       },
       {
         teamId:12,
-        fgPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         ftPer: 0,
         threePM: 0,
         pt: 0,
@@ -175,6 +221,11 @@ const Fbb = ({
     const title = `${leagueName} ${season}`;
 
     return <h1> {leagueName ? title : "FBB"}</h1>;
+  }
+
+  const clear = () => {
+    setStatsList([]);
+    setTeams([]); 
   }
 
   const getTeams = () => {
@@ -222,40 +273,36 @@ const Fbb = ({
   
           statsArray.forEach((stat: any) => {
             switch (stat.statId) {
-              case '5':
-                if (newTeam.fgPer === 0) {
-                  newTeam.fgPer = parseFloat(stat.value);
-                }
-                const newFg = (newTeam.fgPer + parseFloat(stat.value)) / 2;
-                newTeam.fgPer = newFg;
+              case '9004003':
+                const [fgA, fgM] = stat.value.split('/');
+                newTeam.fgA = parseInt(parseZeros(fgA));
+                newTeam.fgM = parseInt(parseZeros(fgM));
                 break;
-              case '8':
-                if (newTeam.ftPer === 0) {
-                  newTeam.ftPer = parseFloat(stat.value);
-                }
-                const newFt = (newTeam.ftPer + parseFloat(stat.value)) / 2;
-                newTeam.ftPer = newFt;
+              case '9007006':
+                const [ftA, ftM] = stat.value.split('/');
+                newTeam.ftA = parseInt(parseZeros(ftA));
+                newTeam.ftM = parseInt(parseZeros(ftM));
                 break;
               case '10':
-                newTeam.threePM = parseInt(stat.value);
+                newTeam.threePM += parseInt(parseZeros(stat.value));
                 break;
               case '12':
-                newTeam.pt = parseInt(stat.value);
+                newTeam.pt += parseInt(parseZeros(stat.value));
                 break;
               case '15':
-                newTeam.reb = parseInt(stat.value);
+                newTeam.reb += parseInt(parseZeros(stat.value));
                 break;
               case '16':
-                newTeam.ass = parseInt(stat.value);
+                newTeam.ass += parseInt(parseZeros(stat.value));
                 break;
               case '17':
-                newTeam.stl = parseInt(stat.value);
+                newTeam.stl += parseInt(parseZeros(stat.value));
                 break;
               case '18':
-                newTeam.blk = parseInt(stat.value);
+                newTeam.blk += parseInt(parseZeros(stat.value));
                 break;
               case '19':
-                newTeam.to = parseInt(stat.value);
+                newTeam.to += parseInt(parseZeros(stat.value));
                 break;
               default:
                 break;
@@ -274,11 +321,13 @@ const Fbb = ({
 
   const getCurrentStatTotal: any = () => {
 
-    const resultTeams: any = [
+    let resultTeams: any = [
       {
         teamId: 1,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -289,8 +338,10 @@ const Fbb = ({
       },
       {
         teamId: 2,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -301,8 +352,10 @@ const Fbb = ({
       },
       {
         teamId: 3,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -313,8 +366,10 @@ const Fbb = ({
       },
       {
         teamId: 4,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -325,8 +380,10 @@ const Fbb = ({
       },
       {
         teamId: 5,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -337,8 +394,10 @@ const Fbb = ({
       },
       {
         teamId: 6,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -349,8 +408,10 @@ const Fbb = ({
       },
       {
         teamId: 7,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -361,8 +422,10 @@ const Fbb = ({
       },
       {
         teamId: 8,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -373,8 +436,10 @@ const Fbb = ({
       },
       {
         teamId: 9,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -385,8 +450,10 @@ const Fbb = ({
       },
       {
         teamId:10,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -397,8 +464,10 @@ const Fbb = ({
       },
       {
         teamId:11,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -409,8 +478,10 @@ const Fbb = ({
       },
       {
         teamId:12,
-        fgPer: 0,
-        ftPer: 0,
+        fgA: 0,
+        fgM: 0,
+        ftA: 0,
+        ftM: 0,
         threePM: 0,
         pt: 0,
         reb: 0,
@@ -421,30 +492,61 @@ const Fbb = ({
       },
     ];
 
+    resultTeams = resultTeams.map((stats: any) => {
+      const matchingTeam: any = teams.find((team: any) => {
+        return parseInt(team.teamId) === parseInt(stats.teamId);
+      });
+  
+      if (matchingTeam) {
+        // If a matching team is found, add the teamName property to the stats object
+        return {
+          ...stats,
+          teamName: matchingTeam.teamName,
+          teamLogo: matchingTeam.teamLogo
+        };
+      }
+
+      // If no matching team is found, return the original stats object
+      return stats;
+    });
+
+    const today = getToday();
     const yesterday = getYesterday();
     const weekStart = getWeekStart();
-    const dateRange = getDatesInRange(weekStart, yesterday);
-
-    dateRange.forEach(date => {
-      const teams = getAllCurrentStats(date);
-      teams.then((res)=> {
-        res.forEach((team: any) => {
-          resultTeams[team.teamId - 1].ass += team.ass;
-          resultTeams[team.teamId - 1].blk += team.blk;
-          resultTeams[team.teamId - 1].fgPer += (resultTeams[team.teamId - 1].fgPer + team.fgPer) / 2;
-          resultTeams[team.teamId - 1].ftPer += (resultTeams[team.teamId - 1].ftPer + team.ftPer) / 2;
-          resultTeams[team.teamId - 1].pt += team.pt;
-          resultTeams[team.teamId - 1].reb += team.reb;
-          resultTeams[team.teamId - 1].stl += team.stl;
-          resultTeams[team.teamId - 1].to += team.to;
-          resultTeams[team.teamId - 1].threePM += team.threePM;
-        })
-      })
-    })
-    console.log(resultTeams);
-
-    setStatsList(resultTeams);
+    const dateRange = getDatesInRange(weekStart, today);
+    const calculatedWeek: string = `${extractMonthAndDay(weekStart)} - ${extractMonthAndDay(today)}`;
+    
+    setCurrentWeek(calculatedWeek);
   
+    // Map the promises for each date
+    const promises = dateRange.map(date => {
+      return getAllCurrentStats(date)
+        .then((res) => {
+          res.forEach((team: any) => {
+            resultTeams[team.teamId - 1].ftA += team.ftA;
+            resultTeams[team.teamId - 1].ftM += team.ftM;
+            resultTeams[team.teamId - 1].fgA += team.fgA;
+            resultTeams[team.teamId - 1].fgM += team.fgM;
+            resultTeams[team.teamId - 1].ass += team.ass;
+            resultTeams[team.teamId - 1].blk += team.blk;
+            resultTeams[team.teamId - 1].pt += team.pt;
+            resultTeams[team.teamId - 1].reb += team.reb;
+            resultTeams[team.teamId - 1].stl += team.stl;
+            resultTeams[team.teamId - 1].to += team.to;
+            resultTeams[team.teamId - 1].threePM += team.threePM;
+          });
+        });
+    });
+  
+    // Wait for all promises to resolve
+    Promise.all(promises)
+      .then(() => {
+        setStatsList(resultTeams);
+      })
+      .catch((error) => {
+        console.error('Error updating stats list:', error);
+      });
+
   }
 
   return (
@@ -452,6 +554,10 @@ const Fbb = ({
       <Header/>
 
       <Box>
+        <Select value={selectedOption} onChange={handleOptionChange}>
+          <MenuItem value="overview">Overview</MenuItem>
+          <MenuItem value="h2h">Head 2 head</MenuItem>
+        </Select>
         <Button onClick={() => {getTeams()}}>
           Fetch Teams
         </Button>
@@ -461,17 +567,19 @@ const Fbb = ({
         <Button onClick={() => {console.log(statsList)}}>
           Check Data
         </Button>
+        <Button onClick={() => {clear()}}>
+          Clear Data
+        </Button>
       </Box>
-      <Box>
-        <Box>
-          Placeholder for graph
-        </Box>
-        <Box>
-          <Box>
-            STATS PLACEHOLDER
-          </Box>
-        </Box>
-      </Box>
+      {selectedOption === 'overview' && (
+        <Overview 
+          statsList={statsList} 
+          currentWeek={currentWeek}
+        />
+      )}
+      {selectedOption === 'h2h' && (
+        <Matchup />
+      )}
     </div>
   );
 };

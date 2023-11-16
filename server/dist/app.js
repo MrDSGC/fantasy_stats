@@ -223,6 +223,7 @@ app.get('/fbb_stats', (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const teamStats = response.fantasy_content.team[0].team_stats[0].stats[0].stat;
         const parsedStats = teamStats.map((team) => {
             return {
+                teamId: teamId,
                 statId: team.stat_id[0],
                 value: team.value[0],
                 statName: FBB_STATS[team.stat_id[0]]
