@@ -233,7 +233,6 @@ const Fbb = ({
 
   const getTeams = () => {
     try {
-
       axios.get(
         `${baseUrl}fbb_teams?${authArgs}`
       ).then((response: any) => {
@@ -253,8 +252,9 @@ const Fbb = ({
 
   const getStats = async (date: any, teamId: any) => {
     try {
+      const first = teamId == '1' ? "1" : "0";
       const response = axios.get(
-        `${baseUrl}fbb_stats?${authArgs}&date=${date}&teamId=${teamId}`
+        `${baseUrl}fbb_stats?${authArgs}&date=${date}&teamId=${teamId}&first=${first}`
       )
       
       return response;
@@ -684,6 +684,8 @@ const Fbb = ({
     Promise.all(promises)
       .then(() => {
         setMatchupData(resultH2H);
+        console.log(resultH2H);
+        console.log("finished h2h")
       })
       .catch((error) => {
         console.error('Error updating stats list:', error);

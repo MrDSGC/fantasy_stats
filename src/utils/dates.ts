@@ -53,7 +53,6 @@ export function getDatesInRange(startDate: any, endDate: any) {
 }
 
 export function extractMonthAndDay(dateString: string) {
-  console.log(dateString)
   const dateParts = dateString.split('-');
   
   if (dateParts.length === 3) {

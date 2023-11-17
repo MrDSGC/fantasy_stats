@@ -133,46 +133,39 @@ const yahooApiRequest = async (url: string, method = 'GET', params: any = {}, re
     // let accessToken = req.session.tokens.access_token;
 
     let accessToken = req.query.authToken;
-    let expiresIn = 3600;
+    let first = req.query.first;
   
     
-    // Check if access token has expired or is close to expiration
-    const expirationTime = expiresIn * 1000; // Convert seconds to milliseconds
-    const currentTime = new Date().getTime();
-    
-    if (currentTime >= expirationTime) {
-      // Access token has expired or is about to expire
-      let refreshToken = req.query.refreshToken;
-      // let refreshToken = req.session.tokens.refresh_token;
+    // if (first == '1') {
+    //   // Access token has expired or is about to expire
+    //   let refreshToken = req.query.refreshToken;
+    //   // let refreshToken = req.session.tokens.refresh_token;
+  
       
-      if (!refreshToken) {
-        throw new Error('Refresh token not found');
-      }
-      
-      // Use the refresh token to request a new access token
-      const tokenResponse = await axios.post(
-        tokenUrl,
-        `client_id=${encodeURIComponent(clientId)}&client_secret=${encodeURIComponent(clientSecret)}&redirect_uri=${encodeURIComponent(redirectUri)}&refresh_token=${encodeURIComponent(refreshToken)}&grant_type=refresh_token`
-        );
+    //   // Use the refresh token to request a new access token
+    //   const tokenResponse = await axios.post(
+    //     tokenUrl,
+    //     `client_id=${encodeURIComponent(clientId)}&client_secret=${encodeURIComponent(clientSecret)}&redirect_uri=${encodeURIComponent(redirectUri)}&refresh_token=${encodeURIComponent(refreshToken)}&grant_type=refresh_token`
+    //     );
         
-        // Log the refreshed token response
-        console.log('Refreshed Token Response:', tokenResponse.data);
+    //     // Log the refreshed token response
+    //     console.log('Refreshed Token Response:', tokenResponse.data);
         
-        // Cant figure how to update the session with the new access token
-        // req.session.tokens.access_token = tokenResponse.data.access_token;
-        // req.session.tokens.expires_in = tokenResponse.data.expires_in;
-        // req.session.tokens.refresh_token = tokenResponse.data.refresh_token;
+    //     // Cant figure how to update the session with the new access token
+    //     // req.session.tokens.access_token = tokenResponse.data.access_token;
+    //     // req.session.tokens.expires_in = tokenResponse.data.expires_in;
+    //     // req.session.tokens.refresh_token = tokenResponse.data.refresh_token;
         
-        req.session.tokens = {
-          access_token: tokenResponse.data.access_token, 
-          refresh_token: tokenResponse.data.refresh_token,
-          expires_in: tokenResponse.data.expires_in
-        };
-        // hacky way to log the tokens and manually enter them into the frontend lol...
-        console.log(req.session.tokens);
-        // Use the new access token
-        accessToken = tokenResponse.data.access_token;
-      }
+    //     req.session.tokens = {
+    //       access_token: tokenResponse.data.access_token, 
+    //       refresh_token: tokenResponse.data.refresh_token,
+    //       expires_in: tokenResponse.data.expires_in
+    //     };
+    //     // hacky way to log the tokens and manually enter them into the frontend lol...
+    //     console.log(req.session.tokens);
+    //     // Use the new access token
+    //     accessToken = tokenResponse.data.access_token;
+    //   }
       
       const yahooApiUrl = 'https://fantasysports.yahooapis.com/fantasy/v2';
       console.log("making yahoo request")
