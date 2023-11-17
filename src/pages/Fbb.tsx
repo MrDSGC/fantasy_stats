@@ -514,6 +514,7 @@ const Fbb = ({
     });
 
     const today = getToday();
+    const yesterday = getYesterday();
     const weekStart = getWeekStart();
     const dateRange = getDatesInRange(weekStart, today);
     const calculatedWeek: string = `${extractMonthAndDay(weekStart)} - ${extractMonthAndDay(today)}`;
@@ -525,6 +526,18 @@ const Fbb = ({
       return getStatsByDate(date)
         .then((res) => {
           res.forEach((team: any) => {
+            resultTeams[team.teamId - 1].diff_ftA = team.ftA;
+            resultTeams[team.teamId - 1].diff_ftM = team.ftM;
+            resultTeams[team.teamId - 1].diff_fgA = team.fgA;
+            resultTeams[team.teamId - 1].diff_fgM = team.fgM;
+            resultTeams[team.teamId - 1].diff_ass = team.ass;
+            resultTeams[team.teamId - 1].diff_blk = team.blk;
+            resultTeams[team.teamId - 1].diff_pt = team.pt;
+            resultTeams[team.teamId - 1].diff_reb = team.reb;
+            resultTeams[team.teamId - 1].diff_stl = team.stl;
+            resultTeams[team.teamId - 1].diff_to = team.to;
+            resultTeams[team.teamId - 1].diff_threePM = team.threePM;
+
             resultTeams[team.teamId - 1].ftA += team.ftA;
             resultTeams[team.teamId - 1].ftM += team.ftM;
             resultTeams[team.teamId - 1].fgA += team.fgA;
@@ -697,7 +710,7 @@ const Fbb = ({
     <div>
       <Header/>
 
-      <Box>
+      <Box >
         <Select value={selectedOption} onChange={handleOptionChange}>
           <MenuItem value="overview">Overview</MenuItem>
           <MenuItem value="h2h">Head 2 head</MenuItem>

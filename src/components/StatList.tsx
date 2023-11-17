@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, ListItem, ListItemText, Typography } from '@mui/material';
-import { getStatFromTeam } from '../utils/stats';
+import { getDisplayStatFromTeam, getStatFromTeam } from '../utils/stats';
 import crownImage from '../assests/crown.png';
 
 type StatListProps = {
@@ -55,7 +55,7 @@ export const StatList: React.FC<StatListProps> = ({ stats, statId }) => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: 'yellow',
+            background: 'linear-gradient(to bottom right, yellow 30%, orange 70%)',
             borderRadius: '5px',
             border: '1px solid black',
             marginBottom: '4px',
@@ -68,6 +68,7 @@ export const StatList: React.FC<StatListProps> = ({ stats, statId }) => {
           <Typography 
             variant='h6'
             sx={{
+              textDecoration: 'underline',
               fontWeight: 'bold', 
             }}
           >{item.teamName}</Typography>
@@ -76,24 +77,36 @@ export const StatList: React.FC<StatListProps> = ({ stats, statId }) => {
               fontWeight: 'bold' ,
               border: '2px solid red',
               borderRadius: '5px',
-              padding: '4px',
+              padding: '4px 8px',
               color: 'black' 
             }}
-          >{getStatFromTeam(item, statId)}</Typography>
+          >{getDisplayStatFromTeam(item, statId)}</Typography>
         </ListItem>
       )
     }else {
       return (
         <ListItem key={index} style={{ 
           padding: '2px 4x', 
-          backgroundColor: 'greenyellow',
+          background: 'linear-gradient(to bottom right, #DAA520, #d2b48c)',
           borderRadius: '5px',
           border: '1px solid black',
           marginBottom: '4px',
           }}
         >
-          <img alt="teamLogo" style={{paddingRight: '4px'}} height="30px" width="30px" src={item.teamLogo} />
-          <ListItemText primary={item.teamName} secondary={`${getStatFromTeam(item, statId)}`} />
+          <img alt="teamLogo" style={{paddingRight: '4px'}} height="40px" width="40px" src={item.teamLogo} />
+          <ListItemText>
+            <Typography 
+              sx={{
+                fontWeight: 'bold', 
+              }}
+            >{item.teamName}</Typography>
+            <Typography
+              sx={{
+                fontWeight: 'bold',
+                color: `${getDisplayStatFromTeam(item,statId)?.includes('-') ? 'red' : 'green'}` 
+              }}
+            >{getDisplayStatFromTeam(item, statId)}</Typography>
+          </ListItemText>
         </ListItem>
       )
     }
